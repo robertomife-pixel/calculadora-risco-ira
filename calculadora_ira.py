@@ -1,31 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Calculadora de Risco de Injúria Renal Aguda (IRA)
-Desenvolvido para pacientes internados (Enfermaria e UTI).
-"""
-
-def obter_entrada_binaria(mensagem):
-    """Auxiliar para coletar respostas de Sim (1) ou Não (0)."""
-    while True:
-        try:
-            resposta = int(input(f"{mensagem} (1 para Sim / 0 para Não): "))
-            if resposta in [0, 1]:
-                return resposta
-            print("Por favor, digite apenas 1 para Sim ou 0 para Não.")
-        except ValueError:
-            print("Entrada inválida. Digite 1 ou 0.")
-
-def coletar_dados_Aqui está o código completo em Python estruturado em formato de questionário interativo via terminal (`input()`). Ele contempla a coleta de informações iniciais do paciente, a triagem entre **Enfermaria** e **UTI**, e calcula os scores específicos solicitados:
-
-1. **Score de Enfermaria** (*Acute Kidney Injury Prediction Score Model*) - Limiar: $\ge 4$ pontos.
-2. **Score de UTI 1 (Malhotra)** - Limiar: $\ge 5$ pontos.
-3. **Score de UTI 2 (Modificado MRAI / Ortiz-Soriano)** - Limiar: $\ge 10$ pontos.
-
-### Código Python
-
-```python
 def obter_resposta_sim_nao(pergunta):
     """Função auxiliar para validar entradas Sim (s) / Não (n)."""
     while True:
@@ -43,8 +18,8 @@ def calculadora_ira():
     print("=" * 60)
     
     # Informações iniciais do paciente
-    nome = input("Nome do paciente: ")
-    prontuario = input("Número do prontuário / ID: ")
+    nome = input("Nome ou identificador fictício do paciente: ")
+    prontuario = input("Identificador fictício (não informe prontuário real): ")
     
     print(f"\nPaciente: {nome} (Prontuário: {prontuario})")
     
@@ -133,10 +108,14 @@ def calculadora_ira():
         print(" AVALIAÇÃO: UTI")
         print(" Escolha qual Score de UTI deseja rodar:")
         print(" 1. Score UTI 1 (Malhotra)")
-        print(" 2. Score UTI 2 (Modificado MRAI / Ortiz-Soriano)")
+        print(" 2. Score UTI 2 (versão simplificada inspirada no mRAI)")
         print("=" * 40)
         
-        escolha_uti = input("Digite 1 ou 2 para o score da UTI: ").strip()
+        while True:
+            escolha_uti = input("Digite 1 ou 2 para o score da UTI: ").strip()
+            if escolha_uti in ['1', '2']:
+                break
+            print("Opção inválida. Digite 1 ou 2.")
         
         if escolha_uti == '1':
             print("\n--- Score UTI 1: Malhotra (Max: 21) ---")
@@ -175,7 +154,8 @@ def calculadora_ira():
                 print("Status: [ RISCO DE IRA NEGATIVO ]")
                 
         elif escolha_uti == '2':
-            print("\n--- Score UTI 2: Modificado MRAI (Ortiz-Soriano) (Max: 50) ---")
+            print("\n--- Versão simplificada inspirada no mRAI (máximo codificado: 46) ---")
+            print("ATENÇÃO: esta implementação não reproduz todos os componentes do estudo de Ortiz-Soriano et al. e não é validada para uso clínico.")
             
             if obter_resposta_sim_nao("Possui Diabetes de base?"):
                 score_total += 1; detalhes_pontos.append("Diabetes de base: +1")
@@ -224,8 +204,8 @@ def calculadora_ira():
                 print("Opção inválida. Digite 1, 2 ou 3.")
                 
             print("\n" + "-" * 40)
-            print(f"RESULTADO - SCORE MRAI MODIFICADO (ORTIZ-SORIANO)")
-            print(f"Pontuação Total: {score_total} / 50")
+            print(f"RESULTADO - PROTÓTIPO SIMPLIFICADO INSPIRADO NO mRAI")
+            print(f"Pontuação Total: {score_total} / 46 (máximo das categorias atualmente codificadas)")
             print("-" * 40)
             
             if score_total >= 10:
@@ -236,7 +216,7 @@ def calculadora_ira():
             print("Opção de UTI inválida.")
 
     # Resumo detalhado dos pontos computados
-    if detalhes_pontos and local == '1' or (local == '2' and 'escolha_uti' in locals() and escolha_uti in ['1', '2']):
+    if detalhes_pontos and (local == '1' or (local == '2' and escolha_uti in ['1', '2'])):
         print("\nFatores contribuintes identificados:")
         for item in detalhes_pontos:
             print(f" - {item}")
