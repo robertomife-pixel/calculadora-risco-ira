@@ -35,4 +35,4 @@ Certifique-se de ter o Python 3 instalado em seu sistema.
 1. Clone o repositório ou baixe o arquivo do script (`calculadora_ira.py`):
    ```bash
    git clone [https://github.com/robertomife-pixel/calculadora-risco-ira](https://github.com/robertomife-pixel/calculadora-risco-ir)
-   cd nome-do-repositorio
+   cd calculadora-risco-ira
